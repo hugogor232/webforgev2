@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Exemples de sites générés par WebForge AI</title>
+    <meta name="description" content="Découvrez la galerie des sites web créés par notre intelligence artificielle. Landing pages, e-commerce, portfolios et plus encore.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles spécifiques au portfolio pour compléter style.css */
+        .portfolio-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .project-thumbnail {
+            height: 200px;
+            background-color: #2a2a2a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-thumbnail img {
+            transform: scale(1.05);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-info {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-category {
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--heading-color);
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .project-meta {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .loader-container {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i> WebForge<span>AI</span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html#features">Fonctionnalités</a></li>
+                    <li><a href="index.html#how-it-works">Comment ça marche</a></li>
+                    <li><a href="pricing.html">Tarifs</a></li>
+                    <li><a href="portfolio.html" class="active">Portfolio</a></li>
+                </ul>
+            </nav>
+
+            <div class="auth-actions" id="auth-buttons">
+                <!-- Injecté via JS -->
+                <a href="login.html" class="btn-text">Connexion</a>
+                <a href="register.html" class="btn-primary">S'inscrire</a>
+            </div>
+
+            <button class="burger-menu" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="pricing.html">Tarifs</a>
+            <a href="portfolio.html" class="active">Portfolio</a>
+            <hr>
+            <div id="mobile-auth-buttons">
+                <a href="login.html">Connexion</a>
+                <a href="register.html">S'inscrire</a>
+            </div>
+        </nav>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="page-header section-padding text-center bg-dark">
+            <div class="container">
+                <span class="badge-new">Showcase</span>
+                <h1>Réalisations de la communauté</h1>
+                <p>Explorez les sites web générés par WebForge AI. Du concept au déploiement en quelques minutes.</p>
+            </div>
+        </section>
+
+        <!-- Portfolio Grid Section -->
+        <section class="section-padding">
+            <div class="container">
+                
+                <!-- Filters -->
+                <div class="portfolio-filters">
+                    <button class="filter-btn active" data-filter="all">Tous</button>
+                    <button class="filter-btn" data-filter="landing">Landing Page</button>
+                    <button class="filter-btn" data-filter="ecommerce">E-commerce</button>
+                    <button class="filter-btn" data-filter="saas">SaaS</button>
+                    <button class="filter-btn" data-filter="portfolio">Portfolio</button>
+                </div>
+
+                <!-- Grid -->
+                <div id="portfolio-grid" class="portfolio-grid">
+                    <div class="loader-container">
+                        <div class="spinner"></div>
+                        <p>Chargement des projets...</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container text-center">
+                <h2>Inspiré par ces exemples ?</h2>
+                <p>Lancez votre propre projet dès maintenant. C'est gratuit pour commencer.</p>
+                <a href="create-project.html" class="btn-primary btn-lg">Générer mon site <i class="fa-solid fa-wand-magic-sparkles"></i></a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>WebForge AI</h3>
+                    <p>La plateforme de génération de sites web nouvelle génération propulsée par l'intelligence artificielle.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <ul>
+                        <li><a href="index.html#features">Fonctionnalités</a></li>
+                        <li><a href="pricing.html">Tarifs</a></li>
+                        <li><a href="portfolio.html">Exemples</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Ressources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Confidentialité</a></li>
+                        <li><a href="#">CGU</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 WebForge AI. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts UI -->
+    <script src="script.js"></script>
+
+    <!-- Supabase Logic -->
+    <script type="module">
+        import { supabase } from './supabaseClient.js';
+        import { checkSession, logout } from './auth-oauth.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Gestion de la session (Header)
+            const session = await checkSession();
+            const authButtonsContainer = document.getElementById('auth-buttons');
+            const mobileAuthContainer = document.getElementById('mobile-auth-buttons');
+
+            if (session) {
+                authButtonsContainer.innerHTML = `
+                    <a href="dashboard.html" class="btn-primary">Dashboard</a>
+                    <button id="logout-btn" class="btn-logout" style="background:none; border:none; cursor:pointer; color:var(--text-color); margin-left:10px;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                `;
+                if (mobileAuthContainer) {
+                    mobileAuthContainer.innerHTML = `
+                        <a href="dashboard.html">Mon Dashboard</a>
+                        <a href="#" id="mobile-logout-btn">Déconnexion</a>
+                    `;
+                }
+                
+                // Logout listeners
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) logoutBtn.addEventListener('click', async (e) => { e.preventDefault(); await logout(); window.location.reload(); });
+                const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+                if (mobileLogoutBtn) mobileLogoutBtn.addEventListener('click', async (e) => { e.preventDefault(); await logout(); window.location.reload(); });
+            }
+
+            // 2. Chargement des projets publics
+            const grid = document.getElementById('portfolio-grid');
+            
+            try {
+                // Récupération des projets publics depuis Supabase
+                const { data: projects, error } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .eq('is_public', true)
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                grid.innerHTML = ''; // Clear loader
+
+                if (!projects || projects.length === 0) {
+                    // Fallback si aucun projet public n'existe encore (pour la démo)
+                    renderMockProjects(grid);
+                } else {
+                    renderProjects(projects, grid);
+                }
+
+            } catch (err) {
+                console.error('Erreur lors du chargement du portfolio:', err);
+                grid.innerHTML = '';
+                // En cas d'erreur (ex: table pas encore créée), afficher des mocks pour la démo
+                renderMockProjects(grid);
+            }
+
+            // 3. Gestion des filtres
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // UI Update
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Filter Logic
+                    const filterValue = btn.getAttribute('data-filter');
+                    const cards = document.querySelectorAll('.project-card');
+                    
+                    cards.forEach(card => {
+                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+
+        // Fonction d'affichage des projets réels
+        function renderProjects(projects, container) {
+            projects.forEach(project => {
+                const card = createCardHTML(project);
+                container.insertAdjacentHTML('beforeend', card);
+            });
+        }
+
+        // Fonction d'affichage des projets de démonstration (Fallback)
+        function renderMockProjects(container) {
+            const mocks = [
+                {
+                    name: "Startup SaaS Landing",
+                    description: "Une landing page moderne pour une startup SaaS avec mode sombre et animations.",
+                    category: "saas",
+                    thumbnail_url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    created_at: new Date().toISOString()
+                },
+                {
+                    name: "Boutique Mode Bio",
+                    description: "Site e-commerce complet avec panier et paiement Stripe intégré.",
+                    category: "ecommerce",
+                    thumbnail_url: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    created_at: new Date().toISOString()
+                },
+                {
+                    name: "Portfolio Photographe",
+                    description: "Galerie minimaliste pour présenter des travaux photographiques.",
+                    category: "portfolio",
+                    thumbnail_url: "https://images.unsplash.com/photo-1452587925703-749559920669?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    created_at: new Date().toISOString()
+                },
+                {
+                    name: "App Dashboard",
+                    description: "Interface d'administration responsive avec graphiques et tableaux de données.",
+                    category: "saas",
+                    thumbnail_url: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    created_at: new Date().toISOString()
+                },
+                {
+                    name: "Restaurant Italien",
+                    description: "Site vitrine avec menu interactif et système de réservation.",
+                    category: "landing",
+                    thumbnail_url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    created_at: new Date().toISOString()
+                },
+                {
+                    name: "Tech Blog",
+                    description: "Blog optimisé SEO avec gestion de contenu via Supabase.",
+                    category: "landing",
+                    thumbnail_url: "https://images.unsplash.com/photo-1499750310159-529800cf2c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    created_at: new Date().toISOString()
+                }
+            ];
+
+            mocks.forEach(project => {
+                const card = createCardHTML(project);
+                container.insertAdjacentHTML('beforeend', card);
+            });
+        }
+
+        // Helper pour générer le HTML d'une carte
+        function createCardHTML(project) {
+            // Sécurisation des données
+            const title = escapeHtml(project.name || 'Projet sans titre');
+            const desc = escapeHtml(project.description || 'Aucune description disponible.');
+            const category = project.category || 'landing';
+            const image = project.thumbnail_url || 'https://via.placeholder.com/400x250?text=No+Preview';
+            const date = new Date(project.created_at).toLocaleDateString('fr-FR');
+
+            return `
+                <div class="project-card" data-category="${category}">
+                    <div class="project-thumbnail">
+                        <img src="${image}" alt="${title}" loading="lazy">
+                        <div class="project-overlay">
+                            <button class="btn-primary btn-sm"><i class="fa-solid fa-eye"></i> Voir</button>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <span class="project-category">${category}</span>
+                        <h3 class="project-title">${title}</h3>
+                        <p class="project-desc">${desc}</p>
+                        <div class="project-meta">
+                            <span><i class="fa-regular fa-calendar"></i> ${date}</span>
+                            <span><i class="fa-solid fa-code-branch"></i> v1.0</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Utilitaire XSS simple
+        function escapeHtml(text) {
+            if (!text) return text;
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>

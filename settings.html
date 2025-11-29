@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres - WebForge AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles spécifiques aux Paramètres (hérite de dashboard.html) */
+        body {
+            background-color: var(--bg-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar (Identique Dashboard) */
+        .sidebar {
+            width: 260px;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(var(--primary-rgb), 0.1);
+            color: var(--primary-color);
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 2rem;
+            width: calc(100% - 260px);
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+        }
+
+        /* Settings Layout */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Settings Nav */
+        .settings-nav {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .settings-tab {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .settings-tab:last-child {
+            border-bottom: none;
+        }
+
+        .settings-tab:hover {
+            background: var(--bg-light);
+            color: white;
+        }
+
+        .settings-tab.active {
+            background: rgba(var(--primary-rgb), 0.1);
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        /* Settings Content */
+        .settings-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .settings-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+        }
+
+        .card-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-header h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Profile Form */
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .avatar-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+        }
+
+        .avatar-upload-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-upload-btn input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: white;
+        }
+
+        .form-input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Billing Section */
+        .plan-summary {
+            background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--secondary-rgb), 0.1) 100%);
+            border: 1px solid var(--primary-color);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .plan-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: var(--primary-color);
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .invoice-table th {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .invoice-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-paid { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .status-pending { background: rgba(234, 179, 8, 0.2); color: #facc15; }
+
+        /* Mobile Responsive */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 200;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            border-radius: 4px;
+            color: white;
+        }
+
+        @media (max-width: 900px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            .settings-nav {
+                display: flex;
+                overflow-x: auto;
+                margin-bottom: 1rem;
+            }
+            .settings-tab {
+                white-space: nowrap;
+                border-bottom: none;
+                border-right: 1px solid var(--border-color);
+            }
+            .settings-tab.active {
+                border-left: none;
+                border-bottom: 3px solid var(--primary-color);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 1rem;
+                padding-top: 4rem;
+            }
+            .mobile-toggle {
+                display: block;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-toggle" id="sidebar-toggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i> WebForge<span>AI</span>
+            </a>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fa-solid fa-gauge-high"></i> Tableau de bord
+            </a>
+            <a href="create-project.html" class="nav-item">
+                <i class="fa-solid fa-plus"></i> Nouveau projet
+            </a>
+            <a href="dashboard.html" class="nav-item">
+                <i class="fa-solid fa-folder-open"></i> Mes projets
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-chart-line"></i> Analytique
+            </a>
+            <a href="settings.html" class="nav-item active">
+                <i class="fa-solid fa-gear"></i> Paramètres
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button id="logout-btn" class="btn-secondary full-width">
+                <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Paramètres du compte</h1>
+            <p>Gérez vos informations personnelles et votre abonnement.</p>
+        </div>
+
+        <div class="settings-grid">
+            <!-- Navigation Tabs -->
+            <nav class="settings-nav">
+                <button class="settings-tab active" data-target="profile">
+                    <i class="fa-regular fa-user"></i> Profil
+                </button>
+                <button class="settings-tab" data-target="billing">
+                    <i class="fa-regular fa-credit-card"></i> Facturation
+                </button>
+                <button class="settings-tab" data-target="security">
+                    <i class="fa-solid fa-shield-halved"></i> Sécurité
+                </button>
+            </nav>
+
+            <!-- Content Sections -->
+            <div class="settings-content">
+                
+                <!-- PROFILE SECTION -->
+                <div id="profile-section" class="settings-card">
+                    <div class="card-header">
+                        <h3>Informations personnelles</h3>
+                        <p>Mettez à jour votre photo et vos détails personnels.</p>
+                    </div>
+
+                    <form id="profile-form">
+                        <div class="avatar-section">
+                            <img src="https://via.placeholder.com/80" alt="Avatar" id="avatar-preview" class="avatar-preview">
+                            <div>
+                                <div class="avatar-upload-btn btn-secondary btn-sm">
+                                    <span>Changer la photo</span>
+                                    <input type="file" id="avatar-upload" accept="image/*">
+                                </div>
+                                <p class="text-sm text-muted mt-2">JPG, GIF ou PNG. Max 1MB.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="full-name" class="form-label">Nom complet</label>
+                                <input type="text" id="full-name" class="form-input" placeholder="Votre nom">
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Adresse Email</label>
+                                <input type="email" id="email" class="form-input" disabled>
+                                <p class="text-sm text-muted mt-1">L'email ne peut pas être modifié.</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="website" class="form-label">Site Web</label>
+                                <input type="url" id="website" class="form-input" placeholder="https://">
+                            </div>
+                            <div class="form-group">
+                                <label for="company" class="form-label">Entreprise</label>
+                                <input type="text" id="company" class="form-input" placeholder="Nom de l'entreprise">
+                            </div>
+                        </div>
+
+                        <div style="text-align: right; margin-top: 1rem;">
+                            <button type="submit" class="btn-primary" id="save-profile-btn">
+                                Enregistrer les modifications
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- BILLING SECTION -->
+                <div id="billing-section" class="settings-card" style="display: none;">
+                    <div class="card-header">
+                        <h3>Abonnement & Facturation</h3>
+                        <p>Gérez votre plan et consultez vos factures.</p>
+                    </div>
+
+                    <div class="plan-summary">
+                        <div class="plan-info">
+                            <h4>Plan Actuel : <span id="current-plan">Chargement...</span></h4>
+                            <p id="plan-details">Renouvellement le --/--/----</p>
+                        </div>
+                        <button class="btn-primary" id="manage-billing-btn">Gérer l'abonnement</button>
+                    </div>
+
+                    <h4>Historique des factures</h4>
+                    <div style="overflow-x: auto;">
+                        <table class="invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Montant</th>
+                                    <th>Statut</th>
+                                    <th>Facture</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoices-list">
+                                <!-- Injecté via JS -->
+                                <tr>
+                                    <td colspan="4" style="text-align: center; color: var(--text-muted);">Aucune facture disponible</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SECURITY SECTION -->
+                <div id="security-section" class="settings-card" style="display: none;">
+                    <div class="card-header">
+                        <h3>Sécurité</h3>
+                        <p>Gérez votre mot de passe et vos sessions.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mot de passe</label>
+                        <button class="btn-secondary" id="reset-password-btn">Envoyer un email de réinitialisation</button>
+                    </div>
+
+                    <hr style="border-color: var(--border-color); margin: 2rem 0;">
+
+                    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1.5rem; border-radius: var(--radius-md);">
+                        <h4 style="color: #ef4444; margin-bottom: 0.5rem;">Zone de danger</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">La suppression de votre compte est irréversible. Toutes vos données seront perdues.</p>
+                        <button class="btn-outline" style="color: #ef4444; border-color: #ef4444;" onclick="alert('Fonctionnalité à implémenter avec confirmation stricte.')">Supprimer mon compte</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+
+    <!-- Supabase Logic -->
+    <script type="module">
+        import { supabase } from './supabaseClient.js';
+        import { protectPrivatePage, logout } from './auth-oauth.js';
+
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Protection de la page
+            const session = await protectPrivatePage();
+            if (!session) return;
+            currentUser = session.user;
+
+            // 2. Initialisation UI
+            setupTabs();
+            setupMobileMenu();
+            
+            // 3. Chargement des données
+            await loadProfile();
+            await loadSubscription();
+
+            // 4. Listeners
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                await logout();
+            });
+
+            document.getElementById('profile-form').addEventListener('submit', updateProfile);
+            document.getElementById('avatar-upload').addEventListener('change', uploadAvatar);
+            document.getElementById('reset-password-btn').addEventListener('click', sendResetPassword);
+            
+            // Simulation Stripe Portal
+            document.getElementById('manage-billing-btn').addEventListener('click', () => {
+                alert("Redirection vers le portail client Stripe...");
+                // window.location.href = data.url; // URL retournée par une Edge Function
+            });
+        });
+
+        // Gestion des onglets
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.settings-tab');
+            const sections = {
+                'profile': document.getElementById('profile-section'),
+                'billing': document.getElementById('billing-section'),
+                'security': document.getElementById('security-section')
+            };
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update Tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Update Sections
+                    const target = tab.dataset.target;
+                    Object.values(sections).forEach(s => s.style.display = 'none');
+                    sections[target].style.display = 'block';
+                });
+            });
+        }
+
+        function setupMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.getElementById('sidebar-toggle');
+            toggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+        }
+
+        // Chargement du profil
+        async function loadProfile() {
+            try {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', currentUser.id)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') throw error;
+
+                // Remplissage du formulaire
+                document.getElementById('email').value = currentUser.email;
+                
+                if (data) {
+                    document.getElementById('full-name').value = data.full_name || '';
+                    document.getElementById('website').value = data.website || '';
+                    document.getElementById('company').value = data.company || ''; // Supposant que le champ existe
+                    
+                    if (data.avatar_url) {
+                        document.getElementById('avatar-preview').src = data.avatar_url;
+                    }
+                }
+
+            } catch (err) {
+                console.error('Erreur chargement profil:', err);
+            }
+        }
+
+        // Mise à jour du profil
+        async function updateProfile(e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-profile-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Enregistrement...';
+            btn.disabled = true;
+
+            try {
+                const updates = {
+                    id: currentUser.id,
+                    full_name: document.getElementById('full-name').value,
+                    website: document.getElementById('website').value,
+                    company: document.getElementById('company').value,
+                    updated_at: new Date()
+                };
+
+                const { error } = await supabase
+                    .from('profiles')
+                    .upsert(updates);
+
+                if (error) throw error;
+
+                alert('Profil mis à jour avec succès !');
+
+            } catch (err) {
+                console.error('Erreur mise à jour:', err);
+                alert('Erreur lors de la mise à jour du profil.');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // Upload Avatar
+        async function uploadAvatar(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            try {
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${currentUser.id}-${Math.random()}.${fileExt}`;
+                const filePath = `${fileName}`;
+
+                // Upload to Supabase Storage
+                const { error: uploadError } = await supabase.storage
+                    .from('avatars')
+                    .upload(filePath, file);
+
+                if (uploadError) throw uploadError;
+
+                // Get Public URL
+                const { data: { publicUrl } } = supabase.storage
+                    .from('avatars')
+                    .getPublicUrl(filePath);
+
+                // Update Profile
+                const { error: updateError } = await supabase
+                    .from('profiles')
+                    .upsert({
+                        id: currentUser.id,
+                        avatar_url: publicUrl
+                    });
+
+                if (updateError) throw updateError;
+
+                // Update UI
+                document.getElementById('avatar-preview').src = publicUrl;
+
+            } catch (err) {
+                console.error('Erreur upload avatar:', err);
+                alert('Erreur lors du téléchargement de l\'image.');
+            }
+        }
+
+        // Chargement Abonnement (Mock pour l'exemple si table vide)
+        async function loadSubscription() {
+            try {
+                // Essai de récupération réelle
+                const { data, error } = await supabase
+                    .from('subscriptions')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                const planEl = document.getElementById('current-plan');
+                const detailsEl = document.getElementById('plan-details');
+
+                if (data) {
+                    planEl.textContent = data.plan_id === 'pro' ? 'Pro' : 'Starter';
+                    const date = new Date(data.current_period_end).toLocaleDateString();
+                    detailsEl.textContent = `Renouvellement le ${date}`;
+                } else {
+                    planEl.textContent = 'Gratuit';
+                    detailsEl.textContent = 'Aucun abonnement actif';
+                }
+
+            } catch (err) {
+                console.log('Pas de données d\'abonnement trouvées');
+            }
+        }
+
+        // Reset Password
+        async function sendResetPassword() {
+            try {
+                const { error } = await supabase.auth.resetPasswordForEmail(currentUser.email, {
+                    redirectTo: window.location.origin + '/settings.html',
+                });
+                if (error) throw error;
+                alert('Email de réinitialisation envoyé à ' + currentUser.email);
+            } catch (err) {
+                console.error('Erreur reset password:', err);
+                alert('Impossible d\'envoyer l\'email.');
+            }
+        }
+    </script>
+</body>
+</html>

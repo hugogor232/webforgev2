@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebForge AI - Générateur de sites Web par Intelligence Artificielle</title>
+    <meta name="description" content="Générez des sites web complets, responsive et sécurisés en quelques secondes grâce à l'IA. Architecture Serverless Supabase.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i> WebForge<span>AI</span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="#features">Fonctionnalités</a></li>
+                    <li><a href="#how-it-works">Comment ça marche</a></li>
+                    <li><a href="pricing.html">Tarifs</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                </ul>
+            </nav>
+
+            <div class="auth-actions" id="auth-buttons">
+                <!-- Le contenu sera injecté par JS selon la session -->
+                <a href="login.html" class="btn-text">Connexion</a>
+                <a href="register.html" class="btn-primary">S'inscrire</a>
+            </div>
+
+            <button class="burger-menu" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+        <nav>
+            <a href="#features">Fonctionnalités</a>
+            <a href="pricing.html">Tarifs</a>
+            <a href="portfolio.html">Portfolio</a>
+            <hr>
+            <div id="mobile-auth-buttons">
+                <a href="login.html">Connexion</a>
+                <a href="register.html">S'inscrire</a>
+            </div>
+        </nav>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <span class="badge-new">Nouveau : Moteur IA v2.0 disponible</span>
+                    <h1>Créez votre site web en <span class="gradient-text">quelques secondes</span> avec l'IA</h1>
+                    <p>Transformez vos idées en code réel. WebForge AI génère, déploie et héberge vos applications web complètes sans que vous n'ayez à écrire une seule ligne de code.</p>
+                    <div class="hero-cta-group">
+                        <a href="register.html" id="hero-cta" class="btn-primary btn-lg">Commencer gratuitement <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#demo" class="btn-secondary btn-lg"><i class="fa-solid fa-play"></i> Voir la démo</a>
+                    </div>
+                    <div class="trust-badges">
+                        <span><i class="fa-solid fa-check"></i> Pas de carte requise</span>
+                        <span><i class="fa-solid fa-check"></i> Code exportable</span>
+                        <span><i class="fa-solid fa-check"></i> Hébergement inclus</span>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="glass-card code-preview">
+                        <div class="window-controls">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <div class="code-content">
+                            <pre><code class="language-javascript"><span class="keyword">const</span> <span class="variable">project</span> = <span class="keyword">await</span> ai.<span class="function">generate</span>({
+  <span class="property">prompt</span>: <span class="string">"Landing page SaaS moderne"</span>,
+  <span class="property">style</span>: <span class="string">"Dark mode, minimaliste"</span>,
+  <span class="property">features</span>: [<span class="string">"Auth"</span>, <span class="string">"Stripe"</span>, <span class="string">"Database"</span>]
+});
+
+<span class="comment">// Génération en cours...</span>
+<span class="function">deploy</span>(project); <span class="comment">// En ligne en 30s 🚀</span></code></pre>
+                        </div>
+                        <div class="floating-badge ai-badge">
+                            <i class="fa-solid fa-robot"></i> AI Generating...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="section-padding bg-light">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2>Une suite complète pour vos projets</h2>
+                    <p>Plus qu'un simple générateur, WebForge est un environnement de développement assisté par IA.</p>
+                </div>
+                
+                <div class="grid-3">
+                    <div class="card feature-card">
+                        <div class="icon-box primary">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h3>Génération Intelligente</h3>
+                        <p>Décrivez votre projet en langage naturel. Notre IA comprend le contexte, crée la structure de la base de données et rédige le code frontend et backend.</p>
+                    </div>
+                    
+                    <div class="card feature-card">
+                        <div class="icon-box secondary">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h3>Éditeur Monaco Intégré</h3>
+                        <p>Gardez le contrôle. Modifiez le code généré directement dans le navigateur avec un éditeur professionnel supportant l'autocomplétion et la coloration syntaxique.</p>
+                    </div>
+                    
+                    <div class="card feature-card">
+                        <div class="icon-box accent">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                        <h3>Backend Supabase</h3>
+                        <p>Chaque projet est livré avec une authentification sécurisée, une base de données PostgreSQL et des API temps réel prêtes à l'emploi.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section id="how-it-works" class="section-padding">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2>Du concept à la réalité en 3 étapes</h2>
+                </div>
+
+                <div class="steps-container">
+                    <div class="step-item">
+                        <div class="step-number">01</div>
+                        <div class="step-content">
+                            <h3>Décrivez</h3>
+                            <p>Entrez votre prompt : "Un site e-commerce pour vendre des chaussures de sport avec un design sombre."</p>
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-item">
+                        <div class="step-number">02</div>
+                        <div class="step-content">
+                            <h3>Personnalisez</h3>
+                            <p>L'IA génère une prévisualisation. Ajustez les couleurs, les textes ou demandez des modifications via le chat.</p>
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-item">
+                        <div class="step-number">03</div>
+                        <div class="step-content">
+                            <h3>Déployez</h3>
+                            <p>Un clic pour mettre en ligne. Connectez votre nom de domaine ou exportez le code source React/Vue.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Demo Preview -->
+        <section id="demo" class="section-padding bg-dark text-white">
+            <div class="container">
+                <div class="split-layout">
+                    <div class="content-side">
+                        <h2>Puissance et Flexibilité</h2>
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check-circle"></i> <strong>Stack Moderne :</strong> React, Tailwind CSS, Node.js.</li>
+                            <li><i class="fa-solid fa-check-circle"></i> <strong>Responsive Design :</strong> Adapté mobile, tablette et desktop.</li>
+                            <li><i class="fa-solid fa-check-circle"></i> <strong>SEO Friendly :</strong> Structure sémantique et méta-tags optimisés.</li>
+                            <li><i class="fa-solid fa-check-circle"></i> <strong>Export :</strong> Téléchargez le ZIP de votre projet à tout moment.</li>
+                        </ul>
+                        <a href="portfolio.html" class="btn-primary mt-4">Explorer les exemples</a>
+                    </div>
+                    <div class="image-side">
+                        <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Interface Dashboard" class="rounded shadow-lg">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="section-padding">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2>Ils ont construit avec WebForge</h2>
+                </div>
+                <div class="grid-3 testimonials-grid">
+                    <div class="card testimonial-card">
+                        <div class="stars">★★★★★</div>
+                        <p>"J'ai créé le MVP de ma startup en un week-end. L'intégration avec Supabase pour la base de données est bluffante de simplicité."</p>
+                        <div class="user-info">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Thomas D." class="avatar">
+                            <div>
+                                <strong>Thomas D.</strong>
+                                <span>Fondateur Tech</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card testimonial-card">
+                        <div class="stars">★★★★★</div>
+                        <p>"En tant que designer, je ne sais pas coder le backend. WebForge a géré toute la logique serveur pour moi."</p>
+                        <div class="user-info">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah L." class="avatar">
+                            <div>
+                                <strong>Sarah L.</strong>
+                                <span>UX Designer</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card testimonial-card">
+                        <div class="stars">★★★★★</div>
+                        <p>"Le code généré est propre et facile à maintenir. C'est un gain de temps énorme pour les agences web."</p>
+                        <div class="user-info">
+                            <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Marc R." class="avatar">
+                            <div>
+                                <strong>Marc R.</strong>
+                                <span>Lead Développeur</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Final -->
+        <section class="cta-section">
+            <div class="container text-center">
+                <h2>Prêt à révolutionner votre workflow ?</h2>
+                <p>Rejoignez des milliers de créateurs et lancez votre site aujourd'hui.</p>
+                <div class="cta-buttons">
+                    <a href="register.html" class="btn-primary btn-lg">Créer un compte gratuit</a>
+                    <a href="pricing.html" class="btn-outline-white">Voir les tarifs</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>WebForge AI</h3>
+                    <p>La plateforme de génération de sites web nouvelle génération propulsée par l'intelligence artificielle.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <ul>
+                        <li><a href="#features">Fonctionnalités</a></li>
+                        <li><a href="pricing.html">Tarifs</a></li>
+                        <li><a href="portfolio.html">Exemples</a></li>
+                        <li><a href="#">Roadmap</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Ressources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Confidentialité</a></li>
+                        <li><a href="#">CGU</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 WebForge AI. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    
+    <!-- Supabase Auth Logic -->
+    <script type="module">
+        import { checkSession, logout } from './auth-oauth.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Vérification de la session
+            const session = await checkSession();
+            
+            const authButtonsContainer = document.getElementById('auth-buttons');
+            const mobileAuthContainer = document.getElementById('mobile-auth-buttons');
+            const heroCta = document.getElementById('hero-cta');
+            const finalCta = document.querySelector('.cta-section .btn-primary');
+
+            if (session) {
+                // L'utilisateur est connecté
+                console.log('Utilisateur connecté:', session.user.email);
+
+                // Mise à jour Header Desktop
+                authButtonsContainer.innerHTML = `
+                    <a href="dashboard.html" class="btn-primary">Dashboard</a>
+                    <button id="logout-btn" class="btn-logout" style="background:none; border:none; cursor:pointer; color:var(--text-color); margin-left:10px;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                `;
+
+                // Mise à jour Menu Mobile
+                if (mobileAuthContainer) {
+                    mobileAuthContainer.innerHTML = `
+                        <a href="dashboard.html">Mon Dashboard</a>
+                        <a href="#" id="mobile-logout-btn">Déconnexion</a>
+                    `;
+                }
+
+                // Mise à jour CTA Hero
+                if (heroCta) {
+                    heroCta.textContent = "Accéder au Dashboard";
+                    heroCta.href = "dashboard.html";
+                }
+
+                // Mise à jour CTA Final
+                if (finalCta) {
+                    finalCta.textContent = "Retour au Dashboard";
+                    finalCta.href = "dashboard.html";
+                }
+
+                // Gestionnaires d'événements pour la déconnexion
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        await logout();
+                        window.location.reload();
+                    });
+                }
+
+                const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+                if (mobileLogoutBtn) {
+                    mobileLogoutBtn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        await logout();
+                        window.location.reload();
+                    });
+                }
+
+            } else {
+                // L'utilisateur n'est pas connecté (Guest)
+                // Les liens par défaut (Login/Register) sont déjà dans le HTML
+                console.log('Mode invité');
+            }
+        });
+    </script>
+</body>
+</html>

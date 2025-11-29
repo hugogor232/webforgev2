@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & Ressources - WebForge AI</title>
+    <meta name="description" content="Articles, tutoriels et actualités sur l'intelligence artificielle, le développement web et l'architecture Serverless.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles spécifiques au blog */
+        .blog-hero {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+            padding: 6rem 0 4rem;
+            color: white;
+            text-align: center;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: -3rem;
+        }
+
+        .article-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .article-image {
+            height: 220px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .article-tag {
+            background: rgba(var(--primary-rgb), 0.1);
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+            color: var(--heading-color);
+        }
+
+        .article-excerpt {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .article-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .author-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--heading-color);
+        }
+
+        .read-more {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .read-more:hover {
+            color: var(--secondary-color);
+        }
+
+        .newsletter-section {
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 1.5rem auto 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i> WebForge<span>AI</span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html#features">Fonctionnalités</a></li>
+                    <li><a href="index.html#how-it-works">Comment ça marche</a></li>
+                    <li><a href="pricing.html">Tarifs</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="blog.html" class="active">Blog</a></li>
+                </ul>
+            </nav>
+
+            <div class="auth-actions" id="auth-buttons">
+                <!-- Injecté via JS -->
+                <a href="login.html" class="btn-text">Connexion</a>
+                <a href="register.html" class="btn-primary">S'inscrire</a>
+            </div>
+
+            <button class="burger-menu" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="pricing.html">Tarifs</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="blog.html" class="active">Blog</a>
+            <hr>
+            <div id="mobile-auth-buttons">
+                <a href="login.html">Connexion</a>
+                <a href="register.html">S'inscrire</a>
+            </div>
+        </nav>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="blog-hero">
+            <div class="container">
+                <h1>Blog & Ressources</h1>
+                <p style="max-width: 600px; margin: 1rem auto 0; opacity: 0.9;">
+                    Explorez nos derniers articles sur l'IA générative, le développement web moderne et les meilleures pratiques pour lancer votre projet SaaS.
+                </p>
+            </div>
+        </section>
+
+        <!-- Blog Content -->
+        <section class="section-padding">
+            <div class="container">
+                
+                <!-- Articles Grid -->
+                <div id="articles-container" class="blog-grid">
+                    <!-- Loading State -->
+                    <div class="card" style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                        <i class="fa-solid fa-circle-notch fa-spin fa-2x" style="color: var(--primary-color);"></i>
+                        <p style="margin-top: 1rem;">Chargement des articles...</p>
+                    </div>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="newsletter-section">
+                    <h3>Restez à la pointe de l'innovation</h3>
+                    <p>Recevez nos meilleurs conseils et les mises à jour de WebForge AI directement dans votre boîte mail.</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Merci pour votre inscription !');">
+                        <input type="email" placeholder="Votre adresse email" required class="form-input" style="flex: 1;">
+                        <button type="submit" class="btn-primary">S'abonner</button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA Final -->
+        <section class="cta-section">
+            <div class="container text-center">
+                <h2>Prêt à passer de la lecture à l'action ?</h2>
+                <p>Utilisez ce que vous avez appris et générez votre site dès aujourd'hui.</p>
+                <a href="register.html" class="btn-outline-white btn-lg">Commencer gratuitement</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>WebForge AI</h3>
+                    <p>La plateforme de génération de sites web nouvelle génération propulsée par l'intelligence artificielle.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <ul>
+                        <li><a href="index.html#features">Fonctionnalités</a></li>
+                        <li><a href="pricing.html">Tarifs</a></li>
+                        <li><a href="portfolio.html">Exemples</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Ressources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Confidentialité</a></li>
+                        <li><a href="#">CGU</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 WebForge AI. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts UI -->
+    <script src="script.js"></script>
+
+    <!-- Supabase Logic -->
+    <script type="module">
+        import { supabase } from './supabaseClient.js';
+        import { checkSession, logout } from './auth-oauth.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Gestion de la session (Header)
+            const session = await checkSession();
+            const authButtonsContainer = document.getElementById('auth-buttons');
+            const mobileAuthContainer = document.getElementById('mobile-auth-buttons');
+
+            if (session) {
+                authButtonsContainer.innerHTML = `
+                    <a href="dashboard.html" class="btn-primary">Dashboard</a>
+                    <button id="logout-btn" class="btn-logout" style="background:none; border:none; cursor:pointer; color:var(--text-color); margin-left:10px;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                `;
+                if (mobileAuthContainer) {
+                    mobileAuthContainer.innerHTML = `
+                        <a href="dashboard.html">Mon Dashboard</a>
+                        <a href="#" id="mobile-logout-btn">Déconnexion</a>
+                    `;
+                }
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) logoutBtn.addEventListener('click', async (e) => { e.preventDefault(); await logout(); window.location.reload(); });
+                const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+                if (mobileLogoutBtn) mobileLogoutBtn.addEventListener('click', async (e) => { e.preventDefault(); await logout(); window.location.reload(); });
+            }
+
+            // 2. Chargement des articles
+            const container = document.getElementById('articles-container');
+            
+            try {
+                // Tentative de récupération depuis Supabase
+                const { data: articles, error } = await supabase
+                    .from('articles')
+                    .select('*')
+                    .eq('status', 'published')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                container.innerHTML = ''; // Clear loader
+
+                if (!articles || articles.length === 0) {
+                    renderMockArticles(container);
+                } else {
+                    renderArticles(articles, container);
+                }
+
+            } catch (err) {
+                console.log('Utilisation des données statiques (Table articles non trouvée ou erreur)');
+                container.innerHTML = '';
+                renderMockArticles(container);
+            }
+        });
+
+        function renderMockArticles(container) {
+            const mocks = [
+                {
+                    title: "L'avenir du développement web avec l'IA",
+                    excerpt: "Comment les LLM comme GPT-4 transforment la manière dont nous concevons et déployons les applications web modernes.",
+                    category: "Intelligence Artificielle",
+                    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    author: "Alexandre Martin",
+                    author_avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                    date: "12 Oct 2023"
+                },
+                {
+                    title: "Supabase vs Firebase : Le guide ultime 2024",
+                    excerpt: "Pourquoi nous avons choisi PostgreSQL et Supabase pour construire WebForge AI. Comparatif des performances et du pricing.",
+                    category: "Tech",
+                    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    author: "Sarah Connor",
+                    author_avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+                    date: "05 Oct 2023"
+                },
+                {
+                    title: "Optimiser le SEO de votre Single Page App",
+                    excerpt: "Les SPA sont géniales pour l'UX, mais peuvent être un cauchemar pour le SEO. Voici comment résoudre le problème.",
+                    category: "Tutoriel",
+                    image: "https://images.unsplash.com/photo-1572435555641-b513b98e7286?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    author: "Marc Dubois",
+                    author_avatar: "https://randomuser.me/api/portraits/men/85.jpg",
+                    date: "28 Sept 2023"
+                },
+                {
+                    title: "Design System : Les bases pour les développeurs",
+                    excerpt: "Comprendre les tokens, les composants atomiques et comment maintenir une cohérence visuelle sans designer.",
+                    category: "Design",
+                    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    author: "Julie Zen",
+                    author_avatar: "https://randomuser.me/api/portraits/women/65.jpg",
+                    date: "15 Sept 2023"
+                },
+                {
+                    title: "Serverless : Faut-il abandonner Node.js ?",
+                    excerpt: "Analyse des avantages et inconvénients de l'architecture Serverless pour les startups en phase de croissance.",
+                    category: "Architecture",
+                    image: "https://images.unsplash.com/photo-1558494949-ef526b0042a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    author: "Thomas Anderson",
+                    author_avatar: "https://randomuser.me/api/portraits/men/22.jpg",
+                    date: "10 Sept 2023"
+                },
+                {
+                    title: "Prompt Engineering pour générer du code React",
+                    excerpt: "Comment structurer vos prompts pour obtenir des composants React propres, fonctionnels et stylisés avec Tailwind.",
+                    category: "Tutoriel",
+                    image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    author: "Alexandre Martin",
+                    author_avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                    date: "01 Sept 2023"
+                }
+            ];
+
+            mocks.forEach(article => {
+                const html = `
+                    <article class="article-card">
+                        <img src="${article.image}" alt="${article.title}" class="article-image" loading="lazy">
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <span class="article-tag">${article.category}</span>
+                                <span><i class="fa-regular fa-calendar"></i> ${article.date}</span>
+                            </div>
+                            <h2 class="article-title">${article.title}</h2>
+                            <p class="article-excerpt">${article.excerpt}</p>
+                            <div class="article-footer">
+                                <div class="author-info">
+                                    <img src="${article.author_avatar}" alt="${article.author}" class="author-avatar">
+                                    <span class="author-name">${article.author}</span>
+                                </div>
+                                <a href="#" class="read-more">Lire <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </article>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        function renderArticles(articles, container) {
+            // Logique similaire à renderMockArticles mais avec les données réelles de Supabase
+            // Mapping des champs DB vers UI
+            articles.forEach(article => {
+                const date = new Date(article.created_at).toLocaleDateString('fr-FR');
+                const html = `
+                    <article class="article-card">
+                        <img src="${article.image_url || 'https://via.placeholder.com/800x400'}" alt="${article.title}" class="article-image" loading="lazy">
+                        <div class="article-content">
+                            <div class="article-meta">
+                                <span class="article-tag">${article.category || 'Général'}</span>
+                                <span><i class="fa-regular fa-calendar"></i> ${date}</span>
+                            </div>
+                            <h2 class="article-title">${escapeHtml(article.title)}</h2>
+                            <p class="article-excerpt">${escapeHtml(article.excerpt || '')}</p>
+                            <div class="article-footer">
+                                <div class="author-info">
+                                    <span class="author-name">${escapeHtml(article.author_name || 'WebForge Team')}</span>
+                                </div>
+                                <a href="article.html?slug=${article.slug}" class="read-more">Lire <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </article>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        function escapeHtml(text) {
+            if (!text) return text;
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>

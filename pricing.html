@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarifs - WebForge AI</title>
+    <meta name="description" content="Découvrez nos offres flexibles pour générer vos sites web avec l'IA. Du plan gratuit pour débuter aux solutions entreprises.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i> WebForge<span>AI</span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html#features">Fonctionnalités</a></li>
+                    <li><a href="index.html#how-it-works">Comment ça marche</a></li>
+                    <li><a href="pricing.html" class="active">Tarifs</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                </ul>
+            </nav>
+
+            <div class="auth-actions" id="auth-buttons">
+                <!-- Injecté via JS -->
+                <a href="login.html" class="btn-text">Connexion</a>
+                <a href="register.html" class="btn-primary">S'inscrire</a>
+            </div>
+
+            <button class="burger-menu" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="pricing.html" class="active">Tarifs</a>
+            <a href="portfolio.html">Portfolio</a>
+            <hr>
+            <div id="mobile-auth-buttons">
+                <a href="login.html">Connexion</a>
+                <a href="register.html">S'inscrire</a>
+            </div>
+        </nav>
+    </div>
+
+    <main>
+        <!-- Header Section -->
+        <section class="pricing-header section-padding text-center">
+            <div class="container">
+                <span class="badge-new">Plans flexibles</span>
+                <h1>Choisissez l'offre adaptée à vos besoins</h1>
+                <p>Commencez gratuitement et évoluez au rythme de vos projets. Aucun frais caché.</p>
+                
+                <!-- Toggle Mensuel/Annuel (Visuel pour l'instant) -->
+                <div class="pricing-toggle">
+                    <span class="toggle-label active">Mensuel</span>
+                    <label class="switch">
+                        <input type="checkbox" id="billing-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="toggle-label">Annuel <span class="badge-save">-20%</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Cards -->
+        <section class="pricing-cards section-padding pt-0">
+            <div class="container">
+                <div class="grid-3">
+                    
+                    <!-- Plan Free -->
+                    <div class="card pricing-card">
+                        <div class="card-header">
+                            <h3>Starter</h3>
+                            <div class="price">0€<span>/mois</span></div>
+                            <p>Idéal pour tester la puissance de l'IA.</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> 1 Projet actif</li>
+                                <li><i class="fa-solid fa-check"></i> Génération IA standard (GPT-3.5)</li>
+                                <li><i class="fa-solid fa-check"></i> Hébergement WebForge</li>
+                                <li><i class="fa-solid fa-check"></i> Support communautaire</li>
+                                <li class="disabled"><i class="fa-solid fa-xmark"></i> Export du code source</li>
+                                <li class="disabled"><i class="fa-solid fa-xmark"></i> Domaine personnalisé</li>
+                            </ul>
+                            <a href="register.html?plan=free" class="btn-secondary full-width plan-btn" data-plan="free">Commencer gratuitement</a>
+                        </div>
+                    </div>
+
+                    <!-- Plan Pro -->
+                    <div class="card pricing-card featured">
+                        <div class="popular-badge">Le plus populaire</div>
+                        <div class="card-header">
+                            <h3>Pro</h3>
+                            <div class="price">29€<span>/mois</span></div>
+                            <p>Pour les créateurs et freelances.</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> <strong>Projets illimités</strong></li>
+                                <li><i class="fa-solid fa-check"></i> <strong>IA Avancée (GPT-4)</strong></li>
+                                <li><i class="fa-solid fa-check"></i> Export React/Vue/HTML</li>
+                                <li><i class="fa-solid fa-check"></i> Domaines personnalisés</li>
+                                <li><i class="fa-solid fa-check"></i> Base de données Supabase dédiée</li>
+                                <li><i class="fa-solid fa-check"></i> Support prioritaire par email</li>
+                            </ul>
+                            <a href="register.html?plan=pro" class="btn-primary full-width plan-btn" data-plan="pro">Choisir le plan Pro</a>
+                        </div>
+                    </div>
+
+                    <!-- Plan Enterprise -->
+                    <div class="card pricing-card">
+                        <div class="card-header">
+                            <h3>Entreprise</h3>
+                            <div class="price">Sur mesure</div>
+                            <p>Pour les agences et grandes équipes.</p>
+                        </div>
+                        <div class="card-body">
+                            <ul class="feature-list">
+                                <li><i class="fa-solid fa-check"></i> Tout ce qu'il y a dans Pro</li>
+                                <li><i class="fa-solid fa-check"></i> SSO & SAML</li>
+                                <li><i class="fa-solid fa-check"></i> SLA garanti 99.9%</li>
+                                <li><i class="fa-solid fa-check"></i> Audit de sécurité</li>
+                                <li><i class="fa-solid fa-check"></i> Account Manager dédié</li>
+                                <li><i class="fa-solid fa-check"></i> Formation des équipes</li>
+                            </ul>
+                            <a href="contact.html" class="btn-outline full-width">Nous contacter</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section section-padding bg-light">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2>Questions Fréquentes</h2>
+                </div>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h4>Puis-je changer de plan à tout moment ?</h4>
+                        <p>Oui, vous pouvez passer du plan Starter au plan Pro ou inversement directement depuis votre dashboard. Le changement est immédiat.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>Le code généré m'appartient-il ?</h4>
+                        <p>Absolument. Avec le plan Pro, vous pouvez exporter le code source et l'héberger où vous voulez. Vous possédez la propriété intellectuelle de vos créations.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>Quels moyens de paiement acceptez-vous ?</h4>
+                        <p>Nous utilisons Stripe pour sécuriser les paiements. Nous acceptons toutes les cartes bancaires majeures (Visa, Mastercard, Amex).</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>Y a-t-il une période d'essai pour le plan Pro ?</h4>
+                        <p>Nous offrons une garantie "satisfait ou remboursé" de 14 jours. Si l'outil ne vous convient pas, nous vous remboursons intégralement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Final -->
+        <section class="cta-section">
+            <div class="container text-center">
+                <h2>Besoin d'une solution personnalisée ?</h2>
+                <p>Discutons de vos besoins spécifiques pour intégrer l'IA dans votre workflow.</p>
+                <a href="contact.html" class="btn-outline-white btn-lg">Parler à un expert</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>WebForge AI</h3>
+                    <p>La plateforme de génération de sites web nouvelle génération propulsée par l'intelligence artificielle.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <ul>
+                        <li><a href="index.html#features">Fonctionnalités</a></li>
+                        <li><a href="pricing.html">Tarifs</a></li>
+                        <li><a href="portfolio.html">Exemples</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Ressources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Confidentialité</a></li>
+                        <li><a href="#">CGU</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 WebForge AI. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts UI -->
+    <script src="script.js"></script>
+
+    <!-- Supabase Logic -->
+    <script type="module">
+        import { checkSession, logout } from './auth-oauth.js';
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Vérification de la session
+            const session = await checkSession();
+            
+            // Éléments DOM
+            const authButtonsContainer = document.getElementById('auth-buttons');
+            const mobileAuthContainer = document.getElementById('mobile-auth-buttons');
+            const planButtons = document.querySelectorAll('.plan-btn');
+
+            if (session) {
+                // --- UTILISATEUR CONNECTÉ ---
+                console.log('Utilisateur connecté:', session.user.email);
+
+                // Mise à jour Header
+                authButtonsContainer.innerHTML = `
+                    <a href="dashboard.html" class="btn-primary">Dashboard</a>
+                    <button id="logout-btn" class="btn-logout" style="background:none; border:none; cursor:pointer; color:var(--text-color); margin-left:10px;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                `;
+
+                // Mise à jour Menu Mobile
+                if (mobileAuthContainer) {
+                    mobileAuthContainer.innerHTML = `
+                        <a href="dashboard.html">Mon Dashboard</a>
+                        <a href="#" id="mobile-logout-btn">Déconnexion</a>
+                    `;
+                }
+
+                // Gestion de la déconnexion
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        await logout();
+                        window.location.reload();
+                    });
+                }
+                const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+                if (mobileLogoutBtn) {
+                    mobileLogoutBtn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        await logout();
+                        window.location.reload();
+                    });
+                }
+
+                // Mise à jour des boutons de plans
+                planButtons.forEach(btn => {
+                    const planType = btn.getAttribute('data-plan');
+                    
+                    if (planType === 'free') {
+                        btn.textContent = "Votre plan actuel";
+                        btn.classList.add('btn-disabled');
+                        btn.href = "#";
+                        btn.style.opacity = "0.7";
+                        btn.style.pointerEvents = "none";
+                    } else if (planType === 'pro') {
+                        btn.textContent = "Passer au plan Pro";
+                        // Simulation lien Stripe (dans un vrai projet, appeler une Edge Function pour créer une session Stripe)
+                        btn.href = "#"; 
+                        btn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            alert("Redirection vers Stripe Checkout pour l'utilisateur : " + session.user.email);
+                            // Ici, on appellerait supabase.functions.invoke('create-checkout-session')
+                        });
+                    }
+                });
+
+            } else {
+                // --- UTILISATEUR NON CONNECTÉ ---
+                console.log('Mode invité');
+                
+                // Les boutons de plan redirigent vers l'inscription avec le paramètre de plan
+                // C'est déjà géré par le href HTML par défaut (register.html?plan=...)
+            }
+
+            // Logique simple pour le toggle Mensuel/Annuel (UI seulement)
+            const billingToggle = document.getElementById('billing-toggle');
+            const prices = document.querySelectorAll('.price');
+            
+            if(billingToggle) {
+                billingToggle.addEventListener('change', function() {
+                    if(this.checked) {
+                        // Mode Annuel
+                        prices.forEach(price => {
+                            if(price.innerHTML.includes('29€')) {
+                                price.innerHTML = '24€<span>/mois</span>'; // -20% approx
+                            }
+                        });
+                    } else {
+                        // Mode Mensuel
+                        prices.forEach(price => {
+                            if(price.innerHTML.includes('24€')) {
+                                price.innerHTML = '29€<span>/mois</span>';
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

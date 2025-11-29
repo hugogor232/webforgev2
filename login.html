@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - WebForge AI</title>
+    <meta name="description" content="Connectez-vous à votre espace WebForge AI pour gérer vos projets de sites web.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles spécifiques à la page d'authentification */
+        body {
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .auth-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background decoration */
+        .auth-bg-shape {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(var(--primary-rgb), 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .auth-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            z-index: 1;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .auth-logo span {
+            color: var(--primary-color);
+        }
+
+        .auth-header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--heading-color);
+        }
+
+        .auth-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .oauth-buttons {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-oauth {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-oauth:hover {
+            background: var(--border-color);
+            border-color: var(--text-muted);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .divider span {
+            padding: 0 10px;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: white;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .forgot-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .forgot-link:hover {
+            color: var(--primary-color);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .auth-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            z-index: 10;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        @media (max-width: 640px) {
+            .auth-card {
+                padding: 1.5rem;
+            }
+            .back-link {
+                top: 1rem;
+                left: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+    </a>
+
+    <div class="auth-container">
+        <div class="auth-bg-shape"></div>
+        
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="index.html" class="auth-logo">
+                    <i class="fa-solid fa-cube"></i> WebForge<span>AI</span>
+                </a>
+                <h1>Bon retour parmi nous</h1>
+                <p>Entrez vos identifiants pour accéder à votre dashboard.</p>
+            </div>
+
+            <!-- Zone de message d'erreur -->
+            <div id="error-message" class="alert alert-error"></div>
+
+            <!-- OAuth Buttons -->
+            <div class="oauth-buttons">
+                <button type="button" class="btn-oauth" id="btn-google">
+                    <i class="fa-brands fa-google"></i> Continuer avec Google
+                </button>
+                <button type="button" class="btn-oauth" id="btn-github">
+                    <i class="fa-brands fa-github"></i> Continuer avec GitHub
+                </button>
+                <button type="button" class="btn-oauth" id="btn-linkedin">
+                    <i class="fa-brands fa-linkedin"></i> Continuer avec LinkedIn
+                </button>
+            </div>
+
+            <div class="divider">
+                <span>ou avec votre email</span>
+            </div>
+
+            <!-- Email Form -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email" class="form-label">Adresse Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="nom@exemple.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-footer">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); cursor: pointer;">
+                        <input type="checkbox" style="accent-color: var(--primary-color);"> Se souvenir de moi
+                    </label>
+                    <a href="forgot-password.html" class="forgot-link">Mot de passe oublié ?</a>
+                </div>
+
+                <button type="submit" class="btn-primary full-width" style="width: 100%; justify-content: center;">
+                    <span id="btn-text">Se connecter</span>
+                    <i id="btn-spinner" class="fa-solid fa-circle-notch fa-spin" style="display: none;"></i>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Pas encore de compte ? <a href="register.html">S'inscrire gratuitement</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+
+    <!-- Supabase Auth Logic -->
+    <script type="module">
+        import { loginWithEmail, loginWithOAuth, checkSession } from './auth-oauth.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Vérifier si l'utilisateur est déjà connecté
+            const session = await checkSession();
+            if (session) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Éléments du DOM
+            const loginForm = document.getElementById('login-form');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const errorDiv = document.getElementById('error-message');
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const btnText = document.getElementById('btn-text');
+            const btnSpinner = document.getElementById('btn-spinner');
+
+            // Boutons OAuth
+            const btnGoogle = document.getElementById('btn-google');
+            const btnGithub = document.getElementById('btn-github');
+            const btnLinkedin = document.getElementById('btn-linkedin');
+
+            // Fonction utilitaire pour afficher les erreurs
+            const showError = (message) => {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            };
+
+            const hideError = () => {
+                errorDiv.style.display = 'none';
+            };
+
+            const setLoading = (isLoading) => {
+                if (isLoading) {
+                    submitBtn.disabled = true;
+                    btnText.style.display = 'none';
+                    btnSpinner.style.display = 'inline-block';
+                    submitBtn.style.opacity = '0.7';
+                } else {
+                    submitBtn.disabled = false;
+                    btnText.style.display = 'inline-block';
+                    btnSpinner.style.display = 'none';
+                    submitBtn.style.opacity = '1';
+                }
+            };
+
+            // 2. Gestionnaire de soumission du formulaire Email/Password
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideError();
+                setLoading(true);
+
+                const email = emailInput.value;
+                const password = passwordInput.value;
+
+                try {
+                    const { data, error } = await loginWithEmail(email, password);
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    // Succès : Redirection vers le dashboard
+                    window.location.href = 'dashboard.html';
+
+                } catch (err) {
+                    console.error('Erreur de connexion:', err);
+                    let msg = "Une erreur est survenue lors de la connexion.";
+                    if (err.message.includes("Invalid login credentials")) {
+                        msg = "Email ou mot de passe incorrect.";
+                    }
+                    showError(msg);
+                    setLoading(false);
+                }
+            });
+
+            // 3. Gestionnaires OAuth
+            const handleOAuth = async (provider) => {
+                try {
+                    const { error } = await loginWithOAuth(provider);
+                    if (error) throw error;
+                } catch (err) {
+                    console.error(`Erreur OAuth ${provider}:`, err);
+                    showError(`Impossible de se connecter avec ${provider}.`);
+                }
+            };
+
+            if (btnGoogle) btnGoogle.addEventListener('click', () => handleOAuth('google'));
+            if (btnGithub) btnGithub.addEventListener('click', () => handleOAuth('github'));
+            if (btnLinkedin) btnLinkedin.addEventListener('click', () => handleOAuth('linkedin'));
+        });
+    </script>
+</body>
+</html>

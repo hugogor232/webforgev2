@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Support - WebForge AI</title>
+    <meta name="description" content="Contactez l'équipe WebForge AI ou ouvrez un ticket de support technique.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Styles spécifiques à la page contact */
+        .contact-section {
+            padding: 4rem 0;
+            min-height: calc(100vh - 300px); /* Ensure footer stays at bottom */
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(var(--primary-rgb), 0.1);
+            color: var(--primary-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .info-content h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: var(--heading-color);
+        }
+
+        .info-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .contact-form-container {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-header h2 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        /* Support Ticket Specifics */
+        .ticket-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(var(--secondary-rgb), 0.1);
+            color: var(--secondary-color);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 900px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .contact-info {
+                order: 2;
+            }
+            .contact-form-container {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i> WebForge<span>AI</span>
+            </a>
+            
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html#features">Fonctionnalités</a></li>
+                    <li><a href="pricing.html">Tarifs</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </nav>
+
+            <div class="auth-actions" id="auth-buttons">
+                <!-- Injecté via JS -->
+                <a href="login.html" class="btn-text">Connexion</a>
+                <a href="register.html" class="btn-primary">S'inscrire</a>
+            </div>
+
+            <button class="burger-menu" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="pricing.html">Tarifs</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="contact.html" class="active">Contact</a>
+            <hr>
+            <div id="mobile-auth-buttons">
+                <a href="login.html">Connexion</a>
+                <a href="register.html">S'inscrire</a>
+            </div>
+        </nav>
+    </div>
+
+    <main>
+        <section class="page-header section-padding text-center bg-dark">
+            <div class="container">
+                <h1>Contact & Support</h1>
+                <p>Une question ? Un problème technique ? Nous sommes là pour vous aider.</p>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    
+                    <!-- Info Side -->
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Email</h3>
+                                <p>hello@webforge.ai<br>support@webforge.ai</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Siège Social</h3>
+                                <p>123 Avenue de l'Innovation<br>75001 Paris, France</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fa-brands fa-twitter"></i>
+                            </div>
+                            <div class="info-content">
+                                <h3>Réseaux Sociaux</h3>
+                                <p>Suivez-nous sur Twitter et LinkedIn pour les dernières mises à jour.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 p-4 bg-light rounded border border-color">
+                            <h4>FAQ Rapide</h4>
+                            <ul class="text-sm text-muted mt-2" style="padding-left: 1.2rem;">
+                                <li>Comment exporter mon code ?</li>
+                                <li>Puis-je changer de plan ?</li>
+                                <li>L'hébergement est-il inclus ?</li>
+                            </ul>
+                            <a href="#" class="text-primary text-sm mt-2 d-block">Voir le centre d'aide <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Form Side -->
+                    <div class="contact-form-container">
+                        <div id="alert-box" class="alert"></div>
+
+                        <!-- Formulaire Public (Guest) -->
+                        <form id="public-form" style="display: none;">
+                            <div class="form-header">
+                                <h2>Envoyez-nous un message</h2>
+                                <p>Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name" class="form-label">Nom complet</label>
+                                <input type="text" id="name" class="form-input" placeholder="Votre nom" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Adresse Email</label>
+                                <input type="email" id="email" class="form-input" placeholder="nom@exemple.com" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject" class="form-label">Sujet</label>
+                                <select id="subject" class="form-select" required>
+                                    <option value="" disabled selected>Choisir un sujet</option>
+                                    <option value="sales">Question commerciale</option>
+                                    <option value="partnership">Partenariat</option>
+                                    <option value="press">Presse</option>
+                                    <option value="other">Autre</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea id="message" class="form-textarea" placeholder="Comment pouvons-nous vous aider ?" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary full-width">
+                                <span class="btn-text">Envoyer le message</span>
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+
+                        <!-- Formulaire Support (Logged In) -->
+                        <form id="support-form" style="display: none;">
+                            <div class="form-header">
+                                <span class="ticket-badge"><i class="fa-solid fa-ticket"></i> Support Premium</span>
+                                <h2>Ouvrir un ticket</h2>
+                                <p>En tant que membre, votre demande sera traitée en priorité.</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Compte</label>
+                                <input type="text" id="user-email-display" class="form-input" disabled style="opacity: 0.7;">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ticket-category" class="form-label">Catégorie</label>
+                                <select id="ticket-category" class="form-select" required>
+                                    <option value="bug">Signaler un bug</option>
+                                    <option value="billing">Facturation</option>
+                                    <option value="feature">Suggestion de fonctionnalité</option>
+                                    <option value="technical">Aide technique</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ticket-priority" class="form-label">Priorité</label>
+                                <select id="ticket-priority" class="form-select" required>
+                                    <option value="low">Basse</option>
+                                    <option value="normal" selected>Normale</option>
+                                    <option value="high">Haute</option>
+                                    <option value="urgent">Urgente (Bloquant)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ticket-message" class="form-label">Description du problème</label>
+                                <textarea id="ticket-message" class="form-textarea" placeholder="Décrivez le problème en détail..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-primary full-width">
+                                <span class="btn-text">Créer le ticket</span>
+                                <i class="fa-solid fa-life-ring"></i>
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>WebForge AI</h3>
+                    <p>La plateforme de génération de sites web nouvelle génération propulsée par l'intelligence artificielle.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <ul>
+                        <li><a href="index.html#features">Fonctionnalités</a></li>
+                        <li><a href="pricing.html">Tarifs</a></li>
+                        <li><a href="portfolio.html">Exemples</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Ressources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">Confidentialité</a></li>
+                        <li><a href="#">CGU</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 WebForge AI. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts UI -->
+    <script src="script.js"></script>
+
+    <!-- Supabase Logic -->
+    <script type="module">
+        import { supabase } from './supabaseClient.js';
+        import { checkSession, logout } from './auth-oauth.js';
+
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Gestion Session
+            const session = await checkSession();
+            const authButtonsContainer = document.getElementById('auth-buttons');
+            const mobileAuthContainer = document.getElementById('mobile-auth-buttons');
+            const publicForm = document.getElementById('public-form');
+            const supportForm = document.getElementById('support-form');
+            const userEmailDisplay = document.getElementById('user-email-display');
+
+            if (session) {
+                // Mode Connecté
+                currentUser = session.user;
+                
+                // Header Update
+                authButtonsContainer.innerHTML = `
+                    <a href="dashboard.html" class="btn-primary">Dashboard</a>
+                    <button id="logout-btn" class="btn-logout" style="background:none; border:none; cursor:pointer; color:var(--text-color); margin-left:10px;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                `;
+                if (mobileAuthContainer) {
+                    mobileAuthContainer.innerHTML = `
+                        <a href="dashboard.html">Mon Dashboard</a>
+                        <a href="#" id="mobile-logout-btn">Déconnexion</a>
+                    `;
+                }
+
+                // Logout Handlers
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) logoutBtn.addEventListener('click', async (e) => { e.preventDefault(); await logout(); window.location.reload(); });
+                const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+                if (mobileLogoutBtn) mobileLogoutBtn.addEventListener('click', async (e) => { e.preventDefault(); await logout(); window.location.reload(); });
+
+                // Show Support Form
+                publicForm.style.display = 'none';
+                supportForm.style.display = 'block';
+                userEmailDisplay.value = currentUser.email;
+
+            } else {
+                // Mode Public
+                publicForm.style.display = 'block';
+                supportForm.style.display = 'none';
+            }
+
+            // 2. Gestionnaire Formulaire Public
+            publicForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                setLoading(publicForm, true);
+                
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+
+                // Simulation d'envoi (ou insertion dans une table 'messages' si elle existait)
+                // Pour l'exercice, on simule un succès car les utilisateurs non connectés ne peuvent pas écrire dans 'support_tickets' (RLS)
+                setTimeout(() => {
+                    showAlert('success', 'Message envoyé ! Nous vous répondrons bientôt.');
+                    publicForm.reset();
+                    setLoading(publicForm, false);
+                }, 1000);
+            });
+
+            // 3. Gestionnaire Formulaire Support (Ticket)
+            supportForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                setLoading(supportForm, true);
+
+                const category = document.getElementById('ticket-category').value;
+                const priority = document.getElementById('ticket-priority').value;
+                const message = document.getElementById('ticket-message').value;
+
+                try {
+                    const { error } = await supabase
+                        .from('support_tickets')
+                        .insert([
+                            {
+                                user_id: currentUser.id,
+                                category: category,
+                                priority: priority,
+                                message: message,
+                                status: 'open'
+                            }
+                        ]);
+
+                    if (error) throw error;
+
+                    showAlert('success', 'Ticket créé avec succès ! Référence #' + Math.floor(Math.random() * 10000));
+                    supportForm.reset();
+
+                } catch (err) {
+                    console.error('Erreur création ticket:', err);
+                    showAlert('error', 'Impossible de créer le ticket. Veuillez réessayer.');
+                } finally {
+                    setLoading(supportForm, false);
+                }
+            });
+        });
+
+        function showAlert(type, message) {
+            const alertBox = document.getElementById('alert-box');
+            alertBox.className = `alert alert-${type}`;
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            
+            // Auto hide after 5s
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+
+        function setLoading(form, isLoading) {
+            const btn = form.querySelector('button[type="submit"]');
+            const text = btn.querySelector('.btn-text');
+            const icon = btn.querySelector('i');
+
+            if (isLoading) {
+                btn.disabled = true;
+                btn.style.opacity = '0.7';
+                text.textContent = 'Envoi...';
+                icon.className = 'fa-solid fa-circle-notch fa-spin';
+            } else {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                text.textContent = form.id === 'support-form' ? 'Créer le ticket' : 'Envoyer le message';
+                icon.className = form.id === 'support-form' ? 'fa-solid fa-life-ring' : 'fa-solid fa-paper-plane';
+            }
+        }
+    </script>
+</body>
+</html>

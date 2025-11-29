@@ -1,0 +1,102 @@
+{
+  "templates": [
+    {
+      "id": "landing",
+      "name": "Landing Page",
+      "icon": "fa-rocket",
+      "description": "Une page unique optimisée pour la conversion et la présentation de produit.",
+      "defaultFeatures": ["contact_form", "newsletter"],
+      "defaultPages": ["page_home"],
+      "aiPromptContext": "Create a high-converting landing page with a clear hero section, features grid, testimonials, and a call-to-action footer. Focus on conversion and clear messaging."
+    },
+    {
+      "id": "portfolio",
+      "name": "Portfolio",
+      "icon": "fa-camera",
+      "description": "Idéal pour les créatifs, photographes et freelances souhaitant exposer leurs travaux.",
+      "defaultFeatures": ["contact_form", "dark_mode_toggle"],
+      "defaultPages": ["page_home", "page_about", "page_contact"],
+      "aiPromptContext": "Create a personal portfolio website focusing on visual hierarchy, large project thumbnails, an about me section, and a contact form. Use a masonry or grid layout for the work section."
+    },
+    {
+      "id": "saas",
+      "name": "SaaS / App",
+      "icon": "fa-layer-group",
+      "description": "Interface moderne pour application web ou logiciel en tant que service.",
+      "defaultFeatures": ["auth", "database", "dark_mode_toggle"],
+      "defaultPages": ["page_home", "page_pricing", "page_contact"],
+      "aiPromptContext": "Create a modern SaaS marketing site with a dashboard preview, pricing tables, feature breakdown, and authentication flow placeholders. Use a clean, tech-focused aesthetic."
+    },
+    {
+      "id": "ecommerce",
+      "name": "E-commerce",
+      "icon": "fa-store",
+      "description": "Boutique en ligne complète pour vendre des produits physiques ou numériques.",
+      "defaultFeatures": ["database", "contact_form"],
+      "defaultPages": ["page_home", "page_products", "page_cart"],
+      "aiPromptContext": "Create an e-commerce storefront with a product grid, product detail modal, shopping cart sidebar, and a clean checkout flow UI. Focus on product imagery and buy buttons."
+    },
+    {
+      "id": "blog",
+      "name": "Blog",
+      "icon": "fa-pen-nib",
+      "description": "Site éditorial pour publier des articles, actualités et tutoriels.",
+      "defaultFeatures": ["database", "newsletter"],
+      "defaultPages": ["page_home", "page_blog", "page_about"],
+      "aiPromptContext": "Create a content-focused blog layout with good typography, article list view, categories sidebar, and an author bio section. Optimize for readability."
+    }
+  ],
+  "styles": [
+    {
+      "id": "minimal",
+      "name": "Minimaliste",
+      "description": "Épuré, beaucoup d'espace blanc, typographie simple.",
+      "promptKeyword": "minimalist, clean, whitespace, swiss design, simple typography, monochrome or single accent color"
+    },
+    {
+      "id": "dark",
+      "name": "Dark Mode",
+      "description": "Moderne, élégant, contrastes forts sur fond sombre.",
+      "promptKeyword": "dark mode, futuristic, neon accents, slate background, high contrast, tech aesthetic"
+    },
+    {
+      "id": "corporate",
+      "name": "Corporate",
+      "description": "Professionnel, bleu/gris, rassurant et sérieux.",
+      "promptKeyword": "professional, corporate, blue tones, trustworthy, business, clean lines, structured layout"
+    },
+    {
+      "id": "playful",
+      "name": "Créatif",
+      "description": "Couleurs vives, formes organiques, typographie audacieuse.",
+      "promptKeyword": "playful, colorful, organic shapes, bold typography, vibrant, rounded corners, friendly"
+    }
+  ],
+  "features": [
+    {
+      "id": "contact_form",
+      "name": "Formulaire de contact",
+      "technicalNote": "Requires API endpoint or email service integration."
+    },
+    {
+      "id": "newsletter",
+      "name": "Newsletter",
+      "technicalNote": "Simple input field with validation."
+    },
+    {
+      "id": "auth",
+      "name": "Authentification",
+      "technicalNote": "Supabase Auth integration (Login/Register forms)."
+    },
+    {
+      "id": "database",
+      "name": "Base de données",
+      "technicalNote": "Supabase Client connection for dynamic data fetching."
+    },
+    {
+      "id": "dark_mode_toggle",
+      "name": "Toggle Dark Mode",
+      "technicalNote": "CSS variables switching via JS."
+    }
+  ]
+}

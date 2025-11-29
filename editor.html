@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éditeur - WebForge AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Styles spécifiques à l'IDE - Overrides et Layout */
+        body {
+            overflow: hidden; /* Pas de scroll global pour l'IDE */
+            background-color: #1e1e1e; /* Match Monaco Dark */
+            color: #d4d4d4;
+        }
+
+        .ide-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Header */
+        .ide-header {
+            height: 50px;
+            background-color: #252526;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            flex-shrink: 0;
+        }
+
+        .ide-header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            color: #cccccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: #3c3c3c;
+            color: white;
+        }
+
+        .project-title {
+            font-weight: 600;
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        .save-status {
+            font-size: 0.8rem;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .save-status.saved { color: #4ade80; }
+        .save-status.saving { color: #fbbf24; }
+        .save-status.error { color: #f87171; }
+
+        .ide-header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-toolbar {
+            background: #3c3c3c;
+            border: none;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .btn-toolbar:hover {
+            background: #505050;
+        }
+
+        .btn-primary-toolbar {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary-toolbar:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Main Workspace */
+        .ide-workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Sidebar File Explorer */
+        .ide-sidebar {
+            width: 220px;
+            background-color: #252526;
+            border-right: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-title {
+            padding: 0.8rem 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: #cccccc;
+            border-left: 2px solid transparent;
+        }
+
+        .file-item:hover {
+            background-color: #2a2d2e;
+            color: white;
+        }
+
+        .file-item.active {
+            background-color: #37373d;
+            color: white;
+            border-left-color: var(--primary-color);
+        }
+
+        .file-icon {
+            width: 16px;
+            text-align: center;
+        }
+
+        .file-icon.html { color: #e34c26; }
+        .file-icon.css { color: #264de4; }
+        .file-icon.js { color: #f0db4f; }
+        .file-icon.json { color: #cbcb41; }
+
+        /* Editor Area */
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #1e1e1e;
+            min-width: 0; /* Prevent flex overflow */
+        }
+
+        .editor-tabs {
+            height: 35px;
+            background-color: #252526;
+            display: flex;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #2d2d2d;
+            color: #969696;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-right: 1px solid #1e1e1e;
+            min-width: 100px;
+        }
+
+        .tab.active {
+            background-color: #1e1e1e;
+            color: white;
+            border-top: 2px solid var(--primary-color);
+        }
+
+        .tab-close {
+            margin-left: auto;
+            font-size: 0.7rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .tab:hover .tab-close {
+            opacity: 1;
+        }
+
+        #monaco-editor {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Resizer */
+        .resizer {
+            width: 4px;
+            background-color: #333;
+            cursor: col-resize;
+            transition: background 0.2s;
+            z-index: 10;
+        }
+
+        .resizer:hover, .resizer.resizing {
+            background-color: var(--primary-color);
+        }
+
+        /* Preview Area */
+        .preview-container {
+            width: 40%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+
+        .preview-header {
+            height: 35px;
+            background-color: #f3f4f6;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            justify-content: space-between;
+            color: #374151;
+            font-size: 0.8rem;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .preview-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .preview-btn:hover {
+            color: #111827;
+        }
+
+        iframe {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: white;
+        }
+
+        /* Loading Overlay */
+        .ide-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div class="ide-loader" id="ide-loader">
+        <i class="fa-solid fa-circle-notch fa-spin fa-2x" style="color: var(--primary-color); margin-bottom: 1rem;"></i>
+        <p>Chargement de l'environnement...</p>
+    </div>
+
+    <div class="ide-container">
+        <!-- Header -->
+        <header class="ide-header">
+            <div class="ide-header-left">
+                <a href="dashboard.html" class="back-btn">
+                    <i class="fa-solid fa-arrow-left"></i> Dashboard
+                </a>
+                <span class="project-title" id="project-name">Chargement...</span>
+                <span class="save-status" id="save-status">
+                    <i class="fa-solid fa-check"></i> Enregistré
+                </span>
+            </div>
+            <div class="ide-header-right">
+                <button class="btn-toolbar" id="refresh-preview">
+                    <i class="fa-solid fa-rotate-right"></i> Rafraîchir
+                </button>
+                <button class="btn-toolbar" id="download-project">
+                    <i class="fa-solid fa-download"></i> Exporter
+                </button>
+                <button class="btn-toolbar btn-primary-toolbar" id="deploy-btn">
+                    <i class="fa-solid fa-rocket"></i> Déployer
+                </button>
+            </div>
+        </header>
+
+        <!-- Workspace -->
+        <div class="ide-workspace">
+            <!-- Sidebar -->
+            <aside class="ide-sidebar">
+                <div class="sidebar-title">Explorateur</div>
+                <ul class="file-list" id="file-list">
+                    <!-- Files injected via JS -->
+                </ul>
+            </aside>
+
+            <!-- Editor -->
+            <div class="editor-container">
+                <div class="editor-tabs" id="editor-tabs">
+                    <!-- Tabs injected via JS -->
+                </div>
+                <div id="monaco-editor"></div>
+            </div>
+
+            <!-- Resizer -->
+            <div class="resizer" id="resizer"></div>
+
+            <!-- Preview -->
+            <div class="preview-container" id="preview-container">
+                <div class="preview-header">
+                    <span><i class="fa-solid fa-eye"></i> Aperçu en direct</span>
+                    <div class="preview-actions">
+                        <button class="preview-btn" title="Ouvrir dans un nouvel onglet" id="open-new-tab">
+                            <i class="fa-solid fa-external-link-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <iframe id="preview-frame" sandbox="allow-scripts allow-modals"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Monaco Editor Loader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    
+    <!-- Supabase & Logic -->
+    <script type="module">
+        import { supabase } from './supabaseClient.js';
+        import { protectPrivatePage } from './auth-oauth.js';
+
+        // State
+        let currentProject = null;
+        let files = [];
+        let activeFile = null;
+        let editor = null;
+        let saveTimeout = null;
+
+        // Elements
+        const fileListEl = document.getElementById('file-list');
+        const tabsEl = document.getElementById('editor-tabs');
+        const previewFrame = document.getElementById('preview-frame');
+        const saveStatusEl = document.getElementById('save-status');
+        const loaderEl = document.getElementById('ide-loader');
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Auth Check
+            const session = await protectPrivatePage();
+            if (!session) return;
+
+            // 2. Get Project ID
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+
+            if (!projectId) {
+                alert("Projet non spécifié.");
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // 3. Load Data & Init
+            try {
+                await loadProjectData(projectId, session.user.id);
+                await initMonaco();
+                renderFileTree();
+                
+                // Open index.html by default
+                const indexFile = files.find(f => f.name === 'index.html');
+                if (indexFile) openFile(indexFile);
+                
+                updatePreview();
+                loaderEl.style.display = 'none';
+
+            } catch (err) {
+                console.error("Erreur d'initialisation:", err);
+                alert("Impossible de charger le projet.");
+            }
+
+            // 4. Event Listeners
+            setupResizer();
+            document.getElementById('refresh-preview').addEventListener('click', updatePreview);
+            
+            // Auto-save logic is handled in editor.onDidChangeModelContent
+        });
+
+        async function loadProjectData(projectId, userId) {
+            // Fetch Project Info
+            const { data: project, error: projError } = await supabase
+                .from('projects')
+                .select('*')
+                .eq('id', projectId)
+                .eq('user_id', userId)
+                .single();
+
+            if (projError) throw projError;
+            currentProject = project;
+            document.getElementById('project-name').textContent = project.name;
+
+            // Fetch Files
+            // Note: Assuming a 'project_files' table exists. 
+            // If not, we might need to parse from a JSON column or create default files if empty.
+            const { data: projectFiles, error: filesError } = await supabase
+                .from('project_files')
+                .select('*')
+                .eq('project_id', projectId);
+
+            if (filesError && filesError.code !== 'PGRST116') { // Ignore empty result
+                console.warn("Erreur chargement fichiers:", filesError);
+            }
+
+            if (!projectFiles || projectFiles.length === 0) {
+                // Initialize default files if none exist (First load)
+                files = [
+                    { id: 'temp-1', name: 'index.html', language: 'html', content: '<!DOCTYPE html>\n<html>\n<head>\n  <link rel="stylesheet" href="style.css">\n</head>\n<body>\n  <h1>Hello WebForge!</h1>\n  <script src="script.js"><\/script>\n</body>\n</html>' },
+                    { id: 'temp-2', name: 'style.css', language: 'css', content: 'body {\n  font-family: sans-serif;\n  background: #f0f0f0;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n}' },
+                    { id: 'temp-3', name: 'script.js', language: 'javascript', content: 'console.log("Hello from WebForge AI");' }
+                ];
+                // In a real app, we would batch insert these into DB here.
+                // For this demo, we assume they are in memory until saved or we create them now.
+                await createDefaultFiles(projectId, files);
+            } else {
+                files = projectFiles;
+            }
+        }
+
+        async function createDefaultFiles(projectId, defaultFiles) {
+            const inserts = defaultFiles.map(f => ({
+                project_id: projectId,
+                name: f.name,
+                language: f.language,
+                content: f.content
+            }));
+            
+            const { data, error } = await supabase
+                .from('project_files')
+                .insert(inserts)
+                .select();
+                
+            if (!error && data) {
+                files = data;
+            }
+        }
+
+        function initMonaco() {
+            return new Promise((resolve) => {
+                require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' }});
+                require(['vs/editor/editor.main'], function() {
+                    editor = monaco.editor.create(document.getElementById('monaco-editor'), {
+                        value: '',
+                        language: 'html',
+                        theme: 'vs-dark',
+                        automaticLayout: true,
+                        minimap: { enabled: false },
+                        fontSize: 14,
+                        padding: { top: 15 }
+                    });
+
+                    // Auto-save listener
+                    editor.onDidChangeModelContent(() => {
+                        if (activeFile) {
+                            activeFile.content = editor.getValue();
+                            triggerAutoSave();
+                        }
+                    });
+
+                    resolve();
+                });
+            });
+        }
+
+        function renderFileTree() {
+            fileListEl.innerHTML = '';
+            files.forEach(file => {
+                const li = document.createElement('li');
+                li.className = `file-item ${activeFile && activeFile.id === file.id ? 'active' : ''}`;
+                li.onclick = () => openFile(file);
+                
+                let iconClass = 'fa-file';
+                let colorClass = '';
+                if (file.name.endsWith('.html')) { iconClass = 'fa-brands fa-html5'; colorClass = 'html'; }
+                else if (file.name.endsWith('.css')) { iconClass = 'fa-brands fa-css3-alt'; colorClass = 'css'; }
+                else if (file.name.endsWith('.js')) { iconClass = 'fa-brands fa-js'; colorClass = 'js'; }
+                
+                li.innerHTML = `
+                    <span class="file-icon ${colorClass}"><i class="${iconClass}"></i></span>
+                    ${file.name}
+                `;
+                fileListEl.appendChild(li);
+            });
+        }
+
+        function openFile(file) {
+            if (activeFile && activeFile.id === file.id) return;
+            
+            activeFile = file;
+            
+            // Update Editor
+            const model = monaco.editor.createModel(file.content, file.language);
+            editor.setModel(model);
+            
+            // Update UI
+            renderFileTree();
+            renderTabs();
+        }
+
+        function renderTabs() {
+            tabsEl.innerHTML = '';
+            if (activeFile) {
+                const tab = document.createElement('div');
+                tab.className = 'tab active';
+                tab.innerHTML = `
+                    <i class="fa-regular fa-file"></i> ${activeFile.name}
+                `;
+                tabsEl.appendChild(tab);
+            }
+        }
+
+        function triggerAutoSave() {
+            // UI Feedback
+            saveStatusEl.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Sauvegarde...';
+            saveStatusEl.className = 'save-status saving';
+
+            // Debounce
+            if (saveTimeout) clearTimeout(saveTimeout);
+            
+            saveTimeout = setTimeout(async () => {
+                try {
+                    const { error } = await supabase
+                        .from('project_files')
+                        .update({ content: activeFile.content })
+                        .eq('id', activeFile.id);
+
+                    if (error) throw error;
+
+                    saveStatusEl.innerHTML = '<i class="fa-solid fa-check"></i> Enregistré';
+                    saveStatusEl.className = 'save-status saved';
+                    
+                    // Auto-refresh preview if configured (optional, here manual refresh is safer for perf)
+                    // updatePreview(); 
+
+                } catch (err) {
+                    console.error("Erreur sauvegarde:", err);
+                    saveStatusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Erreur';
+                    saveStatusEl.className = 'save-status error';
+                }
+            }, 1000); // 1 second delay
+        }
+
+        function updatePreview() {
+            if (!files.length) return;
+
+            const indexHtml = files.find(f => f.name === 'index.html')?.content || '';
+            const styleCss = files.find(f => f.name === 'style.css')?.content || '';
+            const scriptJs = files.find(f => f.name === 'script.js')?.content || '';
+
+            // Inject CSS and JS into HTML
+            let finalHtml = indexHtml;
+            
+            // Replace external CSS link with inline style
+            if (finalHtml.includes('href="style.css"')) {
+                finalHtml = finalHtml.replace('<link rel="stylesheet" href="style.css">', `<style>${styleCss}</style>`);
+            } else {
+                finalHtml = finalHtml.replace('</head>', `<style>${styleCss}</style></head>`);
+            }
+
+            // Replace external JS script with inline script
+            if (finalHtml.includes('src="script.js"')) {
+                finalHtml = finalHtml.replace('<script src="script.js"><\/script>', `<script>${scriptJs}<\/script>`);
+            } else {
+                finalHtml = finalHtml.replace('</body>', `<script>${scriptJs}<\/script></body>`);
+            }
+
+            const blob = new Blob([finalHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            previewFrame.src = url;
+        }
+
+        function setupResizer() {
+            const resizer = document.getElementById('resizer');
+            const previewContainer = document.getElementById('preview-container');
+            const workspace = document.querySelector('.ide-workspace');
+            
+            let isResizing = false;
+
+            resizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                resizer.classList.add('resizing');
+                document.body.style.cursor = 'col-resize';
+                // Overlay iframe to prevent mouse trapping
+                previewFrame.style.pointerEvents = 'none';
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+                const containerWidth = workspace.getBoundingClientRect().width;
+                const newPreviewWidth = containerWidth - (e.clientX - 220); // 220 is sidebar width
+                
+                if (newPreviewWidth > 200 && newPreviewWidth < containerWidth - 300) {
+                    previewContainer.style.width = `${newPreviewWidth}px`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isResizing) {
+                    isResizing = false;
+                    resizer.classList.remove('resizing');
+                    document.body.style.cursor = 'default';
+                    previewFrame.style.pointerEvents = 'auto';
+                    if (editor) editor.layout(); // Refresh editor layout
+                }
+            });
+        }
+    </script>
+</body>
+</html>
