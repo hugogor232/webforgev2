@@ -393,7 +393,40 @@
         const previewFrame = document.getElementById('preview-frame');
         const saveStatusEl = document.getElementById('save-status');
         const loaderEl = document.getElementById('ide-loader');
-
+        
+        // 4. Event Listeners
+        function downloadProject() {
+            // Vérification de sécurité
+            if (!currentProject || !files.length) {
+                alert("Aucune donnée à exporter.");
+                return;
+            }
+            
+            // Préparation des données (Export JSON pour l'instant)
+            const projectData = {
+                id: currentProject.id,
+                name: currentProject.name,
+                description: currentProject.description,
+                files: files
+            };
+            
+            // Création du fichier téléchargeable
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projectData, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", `${currentProject.name.replace(/\s+/g, '_')}_export.json`);
+            
+            // Déclenchement du téléchargement
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+            setupResizer();
+            document.getElementById('refresh-preview').addEventListener('click', updatePreview);
+            
+            // AJOUTER CETTE LIGNE :
+            document.getElementById('download-project').addEventListener('click', downloadProject);
+        
         document.addEventListener('DOMContentLoaded', async () => {
             // 1. Auth Check
             const session = await protectPrivatePage();
