@@ -374,7 +374,8 @@
     <!-- Scripts -->
     <!-- Monaco Editor Loader -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <!-- Supabase & Logic -->
     <script type="module">
         import { supabase } from './supabaseClient.js';
@@ -395,32 +396,60 @@
         const loaderEl = document.getElementById('ide-loader');
         
         // 4. Event Listeners
-        function downloadProject() {
-            // Vérification de sécurité
-            if (!currentProject || !files.length) {
-                alert("Aucune donnée à exporter.");
-                return;
-            }
-            
-            // Préparation des données (Export JSON pour l'instant)
-            const projectData = {
-                id: currentProject.id,
-                name: currentProject.name,
-                description: currentProject.description,
-                files: files
-            };
-            
-            // Création du fichier téléchargeable
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projectData, null, 2));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", `${currentProject.name.replace(/\s+/g, '_')}_export.json`);
-            
-            // Déclenchement du téléchargement
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
+        // Dans editor.html, remplacez l'ancienne fonction downloadProject par celle-ci :
+
+async function downloadProject() {
+    if (!state.files || state.files.length === 0) {
+        alert("Aucun fichier à exporter.");
+        return;
+    }
+
+    // Mettre à jour le statut du bouton
+    const downloadBtn = dom.downloadBtn;
+    const originalText = downloadBtn.innerHTML;
+    downloadBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Préparation...';
+    downloadBtn.disabled = true;
+
+    try {
+        // 1. Créer une nouvelle instance de JSZip
+        // Note: JSZip est chargé globalement via le script CDN dans le <head>
+        const zip = new JSZip();
+
+        // 2. Ajouter chaque fichier du projet au ZIP
+        state.files.forEach(file => {
+            // On utilise file.name comme chemin relatif dans le ZIP
+            // On utilise file.content comme contenu du fichier
+            zip.file(file.name, file.content || '');
+        });
+
+        // 3. (Optionnel) Ajouter un fichier de métadonnées
+        const metadata = {
+            project_name: state.project.name,
+            description: state.project.description,
+            exported_at: new Date().toISOString(),
+            webforge_version: "1.0"
+        };
+        zip.file("webforge.json", JSON.stringify(metadata, null, 2));
+
+        // 4. Générer le fichier ZIP (blob)
+        const content = await zip.generateAsync({ type: "blob" });
+
+        // 5. Déclencher le téléchargement
+        // Nom du fichier : NomDuProjet.zip (en remplaçant les espaces)
+        const fileName = `${state.project.name.replace(/\s+/g, '_') || 'projet'}.zip`;
+        
+        // Utilisation de FileSaver.js (chargé via CDN) pour une meilleure compatibilité
+        saveAs(content, fileName);
+
+        } catch (err) {
+            console.error("Erreur lors de la création du ZIP:", err);
+            alert("Une erreur est survenue lors de l'export du projet.");
+        } finally {
+            // Restaurer le bouton
+            downloadBtn.innerHTML = originalText;
+            downloadBtn.disabled = false;
         }
+    }
             setupResizer();
             document.getElementById('refresh-preview').addEventListener('click', updatePreview);
             
